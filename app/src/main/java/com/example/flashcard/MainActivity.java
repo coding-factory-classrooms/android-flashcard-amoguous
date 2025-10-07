@@ -1,7 +1,14 @@
 package com.example.flashcard;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +16,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,43 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Log.d(TAG, "Hello Flashcard");
+        // FAB stuff
+        fab = findViewById(R.id.fab);
+
+        //Log.d(TAG, "Hello Flashcard");
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+            }
+
+
+        });
     }
+
+    private void startFabAnimation() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(fab, "rotation", 0f, 45f);
+        animator.setDuration(500);
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(fab, "rotation", 45f, -45f);
+        animator2.setDuration(1000);
+
+        ObjectAnimator animator3 = ObjectAnimator.ofFloat(fab, "rotation", -45f, 0f);
+        animator3.setDuration(500);
+
+        AnimatorSet set = new AnimatorSet();
+        //set.play(animator).before(animator2);
+        set.playSequentially(animator, animator2, animator3);
+        set.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startFabAnimation();
+    }
+
+
 }
