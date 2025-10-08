@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+// 1. The adapter now works with a list of Question objects
 public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapter.ViewHolder> {
 
-    private List<QuestionList> questionList;
+    private List<Question> questionList;
 
-    public QuestionListAdapter(List<QuestionList> questionList) {
+    public QuestionListAdapter(List<Question> questionList) {
         this.questionList = questionList;
     }
 
@@ -29,8 +30,10 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        QuestionList questionList1 = questionList.get(position);
-        holder.question.setText(questionList1.getQuestion() + "");
+        // 2. We get a Question object from the list
+        Question currentQuestion = questionList.get(position);
+        // 3. We use its getQuestion() method to set the text
+        holder.question.setText(currentQuestion.getQuestion());
     }
 
     @Override
@@ -45,7 +48,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // find in item_question.xml
+            // This should point to the TextView in your item_question.xml layout
             question = itemView.findViewById(R.id.QuestionTextView);
         }
     }
