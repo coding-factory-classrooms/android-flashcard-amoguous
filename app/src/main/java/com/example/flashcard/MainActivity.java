@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private FloatingActionButton fab;
     private Button startQuizButton; // Declare the start quiz button
+    private View questionListButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         // FAB stuff
         fab = findViewById(R.id.fab);
         startQuizButton = findViewById(R.id.start_quiz_button); // Initialize the button
+        questionListButton = findViewById(R.id.QuestionListButton);
 
-        //Log.d(TAG, "Hello Flashcard");
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Intent to start QuestionListActivity
                 Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        questionListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, QuestionListActivity.class);
                 startActivity(intent);
             }
         });
