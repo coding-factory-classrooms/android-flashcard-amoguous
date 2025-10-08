@@ -8,23 +8,24 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button; // Import the Button class
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private FloatingActionButton fab;
-    private Button startQuizButton; // Declare the start quiz button
+    private Button startQuizButton;
     private View questionListButton;
 
     @Override
@@ -38,11 +39,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // FAB stuff
         fab = findViewById(R.id.fab);
-        startQuizButton = findViewById(R.id.start_quiz_button); // Initialize the button
+        startQuizButton = findViewById(R.id.start_quiz_button);
         questionListButton = findViewById(R.id.QuestionListButton);
-
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,11 +52,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Add OnClickListener for the start quiz button
         startQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent to start QuestionListActivity
                 onCreateDialog();
             }
         });
@@ -99,7 +96,11 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setTitle("Choose your difficulty")
                 .setPositiveButton("Start", (dialog, which) -> {
+
+                    ArrayList<Question> questionList = MockApi.getQuestions();
+
                     Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+                    intent.putParcelableArrayListExtra("QUESTIONS_LIST", questionList);
                     startActivity(intent);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
