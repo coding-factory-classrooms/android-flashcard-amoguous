@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-
     public static final String TAG = "MainActivity";
     private FloatingActionButton fab;
     private Button startQuizButton; // Declare the start quiz button
@@ -57,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Intent to start QuestionListActivity
-                Intent intent = new Intent(MainActivity.this, QuizActivity.class);
-                startActivity(intent);
+                onCreateDialog();
             }
         });
 
@@ -91,5 +91,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startFabAnimation();
+    }
+
+    public void onCreateDialog() {
+        String[] choices = {"Facile", "Normal", "Difficile"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setTitle("Choose your difficulty")
+                .setPositiveButton("Start", (dialog, which) -> {
+                    Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+
+                })
+                .setSingleChoiceItems(choices, 0, (dialog, which) -> {
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
