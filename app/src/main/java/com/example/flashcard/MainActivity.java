@@ -9,7 +9,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Button; // Import the Button class
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +21,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         startQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Intent to start QuestionListActivity
                 onCreateDialog();
             }
         });
@@ -91,22 +92,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCreateDialog() {
-        String[] choices = {"Facile", "Normal", "Difficile"};
+        final String[] choices = {"Facile", "Normal", "Difficile"};
+        final int[] selectedDifficulty = {0};
+
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setTitle("Choose your difficulty")
+                .setSingleChoiceItems(choices, 0, (dialog, which) -> {
+                    selectedDifficulty[0] = which;
+                })
                 .setPositiveButton("Start", (dialog, which) -> {
+                    ArrayList<Question> allQuestions = MockApi.getQuestions();
+                    ArrayList<Question> filteredQuestions = new ArrayList<>();
 
-                    ArrayList<Question> questionList = MockApi.getQuestions();
+                    for(Question question : allQuestions) {
+                        if(question.getDifficulty() == selectedDifficulty[0]) {
+                            filteredQuestions.add(question);
+                        }
+                    }
+
+                    if (filteredQuestions.isEmpty()) {
+                        Toast.makeText(MainActivity.this, "Aucune question trouvée pour cette difficulté.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     Intent intent = new Intent(MainActivity.this, QuizActivity.class);
-                    intent.putParcelableArrayListExtra("QUESTIONS_LIST", questionList);
+                    intent.putParcelableArrayListExtra("QUESTIONS_LIST", filteredQuestions);
                     startActivity(intent);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
-
-                })
-                .setSingleChoiceItems(choices, 0, (dialog, which) -> {
                 });
 
         AlertDialog dialog = builder.create();
