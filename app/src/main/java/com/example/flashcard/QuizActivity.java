@@ -1,14 +1,19 @@
 package com.example.flashcard;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,78 +21,128 @@ import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
 
-    private TextView questionTextView;
-    private RadioGroup answersRadioGroup;
+    private ImageButton soundButton;
+    private MediaPlayer mediaPlayer;
+    private RadioGroup radioGroup;
     private Button validateButton;
 
-    private List<Question> questionList;
+    private List<FlashCard> flashCards;
     private int currentQuestionIndex = 0;
+    private boolean answerValidated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_quiz);
 
-        questionTextView = findViewById(R.id.questionTextView);
-        answersRadioGroup = findViewById(R.id.answersRadioGroup);
+        soundButton = findViewById(R.id.soundButton);
+        radioGroup = findViewById(R.id.answersRadioGroup);
         validateButton = findViewById(R.id.validateButton);
 
-        questionList = getIntent().getParcelableArrayListExtra("QUESTIONS_LIST");
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        if (questionList == null || questionList.isEmpty()) {
-            Toast.makeText(this, "No questions found!", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
 
-        displayQuestion();
+        flashCards = new ArrayList<>();
+        flashCards.add(new FlashCard("Porsche911", R.raw.porsche911,
+                List.of("GOLF 8 Tdi", "Porsche911", "INES", "Hurracane")));
+
+        flashCards.add(new FlashCard("La OuiOui car", R.raw.dog,
+                List.of("GOLF 7R", "La Batmobile", "La OuiOui car", "STR")));
+
+        flashCards.add(new FlashCard("Tesla", R.raw.dog,
+                List.of("ferrari italia", "RS3", "Tesla", "Cocinel d'harry")));
+
+
+        afficherQuestion(currentQuestionIndex);
+
 
         validateButton.setOnClickListener(v -> {
-            int selectedId = answersRadioGroup.getCheckedRadioButtonId();
+            if (!answerValidated) {
+                int selectedId = radioGroup.getCheckedRadioButtonId();
 
-            if (selectedId == -1) {
-                Toast.makeText(this, "Please select an answer", Toast.LENGTH_SHORT).show();
-                return;
-            }
+                if (selectedId == -1) {
+                    Toast.makeText(this, "Sélectionne une réponse", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            RadioButton selectedRadioButton = findViewById(selectedId);
-            String selectedAnswer = selectedRadioButton.getText().toString();
+                RadioButton selectedRadioButton = findViewById(selectedId);
+                String selectedText = selectedRadioButton.getText().toString();
+                FlashCard currentCard = flashCards.get(currentQuestionIndex);
 
-            if (selectedAnswer.equalsIgnoreCase(questionList.get(currentQuestionIndex).getAnswer())) {
-                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+                if (selectedText.equalsIgnoreCase(currentCard.getBonneReponse())) {
+                    Toast.makeText(this, "bonne reponse !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "mauvaise reponse ! La bonne était : " + currentCard.getBonneReponse(), Toast.LENGTH_LONG).show();
+                }
+
+                validateButton.setText("question suivante");
+                answerValidated = true;
             } else {
-                Toast.makeText(this, "Wrong! The answer was: " + questionList.get(currentQuestionIndex).getAnswer(), Toast.LENGTH_LONG).show();
-            }
-
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questionList.size()) {
-                displayQuestion();
-            } else {
-                Toast.makeText(this, "Quiz finished!", Toast.LENGTH_LONG).show();
-                finish();
+                currentQuestionIndex++;
+                if (currentQuestionIndex < flashCards.size()) {
+                    afficherQuestion(currentQuestionIndex);
+                    validateButton.setText("valider reponse");
+                    answerValidated = false;
+                } else {
+                    Toast.makeText(this, "Quiz terminé !", Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }
         });
     }
 
-    private void displayQuestion() {
-        Question currentQuestion = questionList.get(currentQuestionIndex);
-        questionTextView.setText(currentQuestion.getQuestion());
+    private void afficherQuestion(int index) {
+        FlashCard flashCard = flashCards.get(index);
 
-        List<String> answers = new ArrayList<>(currentQuestion.getDistractors());
-        answers.add(currentQuestion.getAnswer());
 
-        Collections.shuffle(answers);
+        List<String> reponses = new ArrayList<>(flashCard.getReponses());
+        Collections.shuffle(reponses);
 
-        answersRadioGroup.clearCheck();
 
-        for (int i = 0; i < answersRadioGroup.getChildCount(); i++) {
-            RadioButton radioButton = (RadioButton) answersRadioGroup.getChildAt(i);
-            if (i < 4) {
-                radioButton.setText(answers.get(i));
-                radioButton.setVisibility(View.VISIBLE);
-            } else {
-                radioButton.setVisibility(View.GONE);
+        radioGroup.clearCheck();
+        int childCount = radioGroup.getChildCount();
+        for (int i = 0; i < childCount && i < reponses.size(); i++) {
+            View child = radioGroup.getChildAt(i);
+            if (child instanceof RadioButton) {
+                ((RadioButton) child).setText(reponses.get(i));
             }
+        }
+
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(this, flashCard.getSonResId());
+        soundButton.setOnClickListener(v -> mediaPlayer.start());
+    }
+
+
+    public static class FlashCard {
+        private final String bonneReponse;
+        private final int sonResId;
+        private final List<String> reponses;
+
+        public FlashCard(String bonneReponse, int sonResId, List<String> reponses) {
+            this.bonneReponse = bonneReponse;
+            this.sonResId = sonResId;
+            this.reponses = reponses;
+        }
+
+        public String getBonneReponse() {
+            return bonneReponse;
+        }
+
+        public int getSonResId() {
+            return sonResId;
+        }
+
+        public List<String> getReponses() {
+            return reponses;
         }
     }
 }
