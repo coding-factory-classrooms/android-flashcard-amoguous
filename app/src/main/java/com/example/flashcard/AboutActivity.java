@@ -28,9 +28,7 @@ public class AboutActivity extends AppCompatActivity {
         TextView versionTextView = findViewById(R.id.versionTextView);
 
         try {
-            // Get the PackageManager instance — it provides information about all installed apps
             PackageManager pm = this.getPackageManager();
-            // '0' means no special flags are used
             PackageInfo pInfo = pm.getPackageInfo(this.getPackageName(), 0);
             String version = pInfo.versionName;
 
