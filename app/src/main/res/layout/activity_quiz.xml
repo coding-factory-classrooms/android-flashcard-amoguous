@@ -4,28 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:background="#C7A4FF"
     android:layout_height="match_parent"
     tools:context=".QuizActivity">
 
+    <ImageButton
+        android:id="@+id/soundButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="Bouton Lecture Audio"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_media_play"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
+
     <TextView
         android:id="@+id/questionTextView"
-        android:layout_width="233dp"
-        android:layout_height="41dp"
-        android:text="quelle est cette image ? "
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="414dp"
-        android:layout_height="214dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="a quelle voiture appartient se son ? "
+        android:textAlignment="center"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toBottomOf="@id/soundButton" />
 
     <RadioGroup
         android:id="@+id/answersRadioGroup"
@@ -34,36 +39,42 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/questionTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
 
         <RadioButton
-            android:id="@+id/radioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="mael" />
-
-        <RadioButton
-            android:id="@+id/radioButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ouali" />
-
-        <RadioButton
-            android:id="@+id/radioButton7"
+            android:id="@+id/radioButtonA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ines" />
+            android:text="Porsche911" />
+
+        <RadioButton
+            android:id="@+id/radioButtonB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="INES" />
+
+        <RadioButton
+            android:id="@+id/radioButtonC"
+            android:layout_width="141dp"
+            android:layout_height="wrap_content"
+            android:text="GOLF 8 Tdi" />
+
+        <RadioButton
+            android:id="@+id/radioButtonD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hurracane" />
     </RadioGroup>
 
     <Button
         android:id="@+id/validateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="164dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="212dp"
         android:text="Valider"
-        app:layout_constraintTop_toBottomOf="@id/answersRadioGroup"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/answersRadioGroup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
