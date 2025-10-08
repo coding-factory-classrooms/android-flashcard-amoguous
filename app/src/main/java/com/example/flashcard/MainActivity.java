@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button; // Import the Button class
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
     private FloatingActionButton fab;
+    private Button startQuizButton; // Declare the start quiz button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         // FAB stuff
         fab = findViewById(R.id.fab);
+        startQuizButton = findViewById(R.id.start_quiz_button); // Initialize the button
 
         //Log.d(TAG, "Hello Flashcard");
 
@@ -45,8 +48,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
             }
+        });
 
-
+        // Add OnClickListener for the start quiz button
+        startQuizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent to start QuestionListActivity
+                Intent intent = new Intent(MainActivity.this, QuestionListActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
@@ -71,6 +82,4 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         startFabAnimation();
     }
-
-
 }
