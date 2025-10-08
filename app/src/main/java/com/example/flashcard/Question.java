@@ -15,17 +15,21 @@ public class Question implements Parcelable {
     private String answer;
     @SerializedName("distractors")
     private List<String> distractors;
+    @SerializedName("difficulty")
+    private int difficulty;
 
-    public Question(String question, String answer, List<String> distractors) {
+    public Question(String question, String answer, List<String> distractors, int difficulty) {
         this.question = question;
         this.answer = answer;
         this.distractors = distractors;
+        this.difficulty = difficulty;
     }
 
     protected Question(Parcel in) {
         question = in.readString();
         answer = in.readString();
         distractors = in.createStringArrayList();
+        difficulty = in.readInt();
     }
 
     @Override
@@ -33,6 +37,7 @@ public class Question implements Parcelable {
         dest.writeString(question);
         dest.writeString(answer);
         dest.writeStringList(distractors);
+        dest.writeInt(difficulty);
     }
 
     @Override
@@ -62,5 +67,9 @@ public class Question implements Parcelable {
 
     public List<String> getDistractors() {
         return distractors;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
     }
 }
