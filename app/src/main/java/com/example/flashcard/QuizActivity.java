@@ -1,5 +1,6 @@
 package com.example.flashcard;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,8 @@ public class QuizActivity extends AppCompatActivity {
     private List<Question> questionList;
     private int currentQuestionIndex = 0;
     private boolean answerValidated = false;
+    private int correctTotal = 0;
+    private String difficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class QuizActivity extends AppCompatActivity {
             return insets;
         });
 
+        difficulty = getIntent().getStringExtra("difficulty");
         questionList = getIntent().getParcelableArrayListExtra("QUESTIONS_LIST");
 
         if (questionList == null || questionList.isEmpty()) {
@@ -77,6 +81,7 @@ public class QuizActivity extends AppCompatActivity {
 
                 if (selectedAnswer.equalsIgnoreCase(currentQuestion.getAnswer())) {
                     Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+                    correctTotal++;
                 } else {
                     Toast.makeText(this, "Wrong! The answer was: " + currentQuestion.getAnswer(), Toast.LENGTH_LONG).show();
                 }
@@ -92,6 +97,11 @@ public class QuizActivity extends AppCompatActivity {
                     answerValidated = false;
                 } else {
                     Toast.makeText(this, "Quiz finished!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(QuizActivity.this, StatActivity.class);
+                    intent.putExtra("difficulty",difficulty);
+                    intent.putExtra("total",questionList.size());
+                    intent.putExtra("true",correctTotal);
+                    startActivity(intent);
                     finish();
                 }
             }

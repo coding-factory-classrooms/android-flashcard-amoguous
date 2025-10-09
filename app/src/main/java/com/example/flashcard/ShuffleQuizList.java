@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ShuffleQuizList {
 
-    public static List<QuestionList> shuffle(List<QuestionList> list, Integer maxValue){
-        ArrayList<QuestionList> shuffled = new ArrayList<>();
+    public static ArrayList<Question> shuffle(ArrayList<Question> list, Integer maxValue){
+        ArrayList<Question> shuffled = new ArrayList<>();
         for (int i = 0; i < maxValue; i++) {
             int randValue = (int) Math.round(Math.random()*(list.size()-1));
             shuffled.add(list.get(randValue));
@@ -17,8 +17,8 @@ public class ShuffleQuizList {
         return shuffled;
     }
 
-    public static List<QuestionList> shuffle(List<QuestionList> list){
-        ArrayList<QuestionList> shuffled = new ArrayList<>();
+    public static ArrayList<Question> shuffle(ArrayList<Question> list){
+        ArrayList<Question> shuffled = new ArrayList<>();
         int size = list.size();
         for (int i = 0; i < size; i++) {
             int randValue = (int) Math.round(Math.random()*(list.size()-1));

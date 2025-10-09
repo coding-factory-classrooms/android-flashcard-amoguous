@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private Button startQuizButton;
     private View questionListButton;
+    private String difficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +117,29 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
+                    switch (selectedDifficulty[0]){
+                        case 0:{
+                            difficulty = "Facile";
+                            break;
+                        }
+                        case 1:{
+                            difficulty = "Normal";
+                            break;
+                        }
+                        case 2:{
+                            difficulty = "Difficile";
+                            break;
+                        }
+                        default:{
+                            difficulty = "Erreur";
+                            break;
+                        }
+                    }
+
+                    filteredQuestions = ShuffleQuizList.shuffle(filteredQuestions);
                     Intent intent = new Intent(MainActivity.this, QuizActivity.class);
                     intent.putParcelableArrayListExtra("QUESTIONS_LIST", filteredQuestions);
+                    intent.putExtra("difficulty",difficulty);
                     startActivity(intent);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
