@@ -36,6 +36,9 @@ public class QuizActivity extends AppCompatActivity {
     private int correctTotal = 0;
     private String difficulty;
 
+    ArrayList<Question> wrongQuestions = new ArrayList<>(); //list for new test with wrong question
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +87,7 @@ public class QuizActivity extends AppCompatActivity {
                     correctTotal++;
                 } else {
                     Toast.makeText(this, "Wrong! The answer was: " + currentQuestion.getAnswer(), Toast.LENGTH_LONG).show();
+                    wrongQuestions.add(currentQuestion);
                 }
 
                 validateButton.setText("Next question");
@@ -101,6 +105,7 @@ public class QuizActivity extends AppCompatActivity {
                     intent.putExtra("difficulty",difficulty);
                     intent.putExtra("total",questionList.size());
                     intent.putExtra("true",correctTotal);
+                    intent.putParcelableArrayListExtra("WRONG_QUESTIONS", wrongQuestions);
                     startActivity(intent);
                     finish();
                 }
