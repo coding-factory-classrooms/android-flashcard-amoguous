@@ -107,7 +107,8 @@ public class QuizActivity extends AppCompatActivity {
     private void afficherQuestion(int index) {
         FlashCard flashCard = flashCards.get(index);
 
-        questionNumberTextView.setText("Question " + (index + 1));
+        questionNumberTextView.setText("Question " + (index + 1) + " / " + flashCards.size());
+
 
         List<String> reponses = new ArrayList<>(flashCard.getReponses());
         Collections.shuffle(reponses);
