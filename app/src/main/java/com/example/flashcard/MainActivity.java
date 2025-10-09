@@ -1,5 +1,7 @@
 package com.example.flashcard;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Start", (dialog, which) -> {
                     // 1. Setup Retrofit
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://10.0.2.2:4000/")
+                            .baseUrl("https://myquizapp.loca.lt/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
@@ -109,5 +111,29 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
+    }
+
+    private void startFabAnimation() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(fab, "rotation", 0f, 45f);
+        animator.setDuration(500);
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(fab, "rotation", 45f, -45f);
+        animator2.setDuration(1000);
+
+        ObjectAnimator animator3 = ObjectAnimator.ofFloat(fab, "rotation", -45f, 0f);
+        animator3.setDuration(500);
+
+        AnimatorSet set = new AnimatorSet();
+        //set.play(animator).before(animator2);
+        set.playSequentially(animator, animator2, animator3);
+        set.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startFabAnimation();
     }
 }

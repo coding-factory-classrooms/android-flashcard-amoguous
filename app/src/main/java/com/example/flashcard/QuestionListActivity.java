@@ -29,7 +29,7 @@ public class QuestionListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:4000/")
+                .baseUrl("https://myquizapp.loca.lt/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
