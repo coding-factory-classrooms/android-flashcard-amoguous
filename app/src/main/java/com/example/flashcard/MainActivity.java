@@ -115,9 +115,29 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Aucune question trouvée pour cette difficulté.", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
+                    ArrayList<Question> shuffledQuestions = ShuffleQuizList.shuffle(filteredQuestions);
                     Intent intent = new Intent(MainActivity.this, QuizActivity.class);
-                    intent.putParcelableArrayListExtra("QUESTIONS_LIST", filteredQuestions);
+                    intent.putParcelableArrayListExtra("QUESTIONS_LIST", shuffledQuestions);
+                    String difficulty;
+                    switch (selectedDifficulty[0]){
+                        case 0:{
+                            difficulty = "Facile";
+                            break;
+                        }
+                        case 1:{
+                            difficulty = "Normal";
+                            break;
+                        }
+                        case 2:{
+                            difficulty = "Difficile";
+                            break;
+                        }
+                        default:{
+                            difficulty = "Erreur";
+                            break;
+                        }
+                    }
+                    intent.putExtra("difficulty",difficulty);
                     startActivity(intent);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
