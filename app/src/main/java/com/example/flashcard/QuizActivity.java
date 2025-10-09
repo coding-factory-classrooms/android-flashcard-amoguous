@@ -57,7 +57,6 @@ public class QuizActivity extends AppCompatActivity {
             return insets;
         });
 
-        difficulty = getIntent().getStringExtra("difficulty");
         questionList = getIntent().getParcelableArrayListExtra("QUESTIONS_LIST");
 
         if (questionList == null || questionList.isEmpty()) {
@@ -65,6 +64,16 @@ public class QuizActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        difficulty = getIntent().getStringExtra("difficulty");
+        int firstDifficulty = questionList.get(0).getDifficulty(); // retrieve difficulty
+        switch(firstDifficulty) {
+            case 0: difficulty = "Facile"; break;
+            case 1: difficulty = "Normal"; break;
+            case 2: difficulty = "Difficile"; break;
+            default: difficulty = "Facile"; break;
+        }
+
 
         displayQuestion(currentQuestionIndex);
 
