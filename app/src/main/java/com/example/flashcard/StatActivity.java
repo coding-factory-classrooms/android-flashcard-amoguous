@@ -40,7 +40,12 @@ public class StatActivity extends AppCompatActivity {
         this.scoreView = findViewById(R.id.scoreView);
         this.scoreView.setText(srcIntent.getIntExtra("true", 0) + "/" + srcIntent.getIntExtra("total", 1));
         this.difficultyView = findViewById(R.id.difficultyView);
-        this.difficultyView.setText("Résultats ("+srcIntent.getStringExtra("difficulty")+")");
+        String difficulty = srcIntent.getStringExtra("difficulty");
+        if (difficulty == null) {
+            difficulty = "Révision des erreurs";
+        }
+        this.difficultyView.setText("Résultats (" + difficulty + ")");
+
         this.shareButton = findViewById(R.id.shareButton);
         this.shareButton.setOnClickListener(view -> {
 
