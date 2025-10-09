@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,16 +20,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class QuizActivity extends AppCompatActivity {
 
-    private ImageButton soundButton;
-    private MediaPlayer mediaPlayer;
-    private RadioGroup radioGroup;
-    private Button validateButton;
+    private ImageButton soundButton; //btn pour le son
+    private MediaPlayer mediaPlayer;//btn pour gerer la lecture audio
+    private RadioGroup radioGroup;//btn groupe de bouton radio
+    private Button validateButton;//btn de validation
+    private TextView questionNumberTextView;//texte pour afficher Question (N)
 
-    private List<FlashCard> flashCards;
-    private int currentQuestionIndex = 0;
-    private boolean answerValidated = false;
+
+    private List<FlashCard> flashCards; //list question flashcards
+    private int currentQuestionIndex = 0;//index question actuel
+    private boolean answerValidated = false;//montre si la rep a deja ete valider
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,12 @@ public class QuizActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_quiz);
 
+        // on recup les vue pour les utiliser
         soundButton = findViewById(R.id.soundButton);
         radioGroup = findViewById(R.id.answersRadioGroup);
         validateButton = findViewById(R.id.validateButton);
+        questionNumberTextView = findViewById(R.id.questionNumberTextView);
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -63,6 +70,7 @@ public class QuizActivity extends AppCompatActivity {
 
         validateButton.setOnClickListener(v -> {
             if (!answerValidated) {
+                //recup de l'id du bouton selectioner
                 int selectedId = radioGroup.getCheckedRadioButtonId();
 
                 if (selectedId == -1) {
@@ -99,6 +107,7 @@ public class QuizActivity extends AppCompatActivity {
     private void afficherQuestion(int index) {
         FlashCard flashCard = flashCards.get(index);
 
+        questionNumberTextView.setText("Question " + (index + 1));
 
         List<String> reponses = new ArrayList<>(flashCard.getReponses());
         Collections.shuffle(reponses);
