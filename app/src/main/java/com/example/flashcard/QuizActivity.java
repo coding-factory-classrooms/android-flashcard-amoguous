@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +39,9 @@ public class QuizActivity extends AppCompatActivity {
     private int correctTotal = 0;
     private String difficulty;
 
+    private ImageView questionImageView;
+
+
     ArrayList<Question> wrongQuestions = new ArrayList<>(); //list for new test with wrong question
 
 
@@ -50,6 +56,8 @@ public class QuizActivity extends AppCompatActivity {
         validateButton = findViewById(R.id.validateButton);
         questionTextView = findViewById(R.id.questionTextView);
         questionNumberTextView = findViewById(R.id.questionNumberTextView);
+        questionImageView = findViewById(R.id.questionImageView);
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -151,5 +159,16 @@ public class QuizActivity extends AppCompatActivity {
         soundButton.setOnClickListener(v -> {
             Toast.makeText(this, "Aucun son pour cette question", Toast.LENGTH_SHORT).show();
         });
+
+        String imageUrl = currentQuestion.getImage();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            // Charger l'image avec Glide
+            Glide.with(this)
+                    .load("https://myquizapp.loca.lt" + imageUrl) // ← mets ton IP locale ici
+                    .into(questionImageView);
+        } else {
+            questionImageView.setImageResource(R.drawable.flag_usa); // image par défaut
+        }
+
     }
 }
