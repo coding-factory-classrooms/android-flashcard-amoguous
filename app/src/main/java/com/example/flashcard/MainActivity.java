@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                                     return;
                                 }
 
+                                filteredQuestions = ShuffleQuizList.shuffle(filteredQuestions);
                                 // 5. Start the quiz with the filtered list
                                 Intent intent = new Intent(MainActivity.this, QuizActivity.class);
                                 intent.putParcelableArrayListExtra("QUESTIONS_LIST", filteredQuestions);
