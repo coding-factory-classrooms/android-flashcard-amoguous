@@ -17,6 +17,8 @@ public class Question implements Parcelable {
     private List<String> distractors;
     @SerializedName("difficulty")
     private int difficulty;
+    @SerializedName("image")
+    private String image;
 
     public Question(String question, String answer, List<String> distractors, int difficulty) {
         this.question = question;
@@ -30,6 +32,8 @@ public class Question implements Parcelable {
         answer = in.readString();
         distractors = in.createStringArrayList();
         difficulty = in.readInt();
+        image = in.readString();
+
     }
 
     @Override
@@ -38,6 +42,8 @@ public class Question implements Parcelable {
         dest.writeString(answer);
         dest.writeStringList(distractors);
         dest.writeInt(difficulty);
+        dest.writeString(image);
+
     }
 
     @Override
@@ -71,5 +77,13 @@ public class Question implements Parcelable {
 
     public int getDifficulty() {
         return difficulty;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
