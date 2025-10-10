@@ -34,6 +34,7 @@ public class StatActivity extends AppCompatActivity {
 
         Intent srcIntent = getIntent();
 
+        //Get and Set all Activity Fields
         this.percentageView = findViewById(R.id.percentageView);
         Double percentage = (double) ((srcIntent.getIntExtra("true", 0) * 100) / srcIntent.getIntExtra("total", 1));
         this.percentageView.setText(percentage + " %");
@@ -49,6 +50,7 @@ public class StatActivity extends AppCompatActivity {
         this.shareButton = findViewById(R.id.shareButton);
         this.shareButton.setOnClickListener(view -> {
 
+            //Creation of the action to Share the Result
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "Regarde ! J'ai fait "+
@@ -64,6 +66,7 @@ public class StatActivity extends AppCompatActivity {
         reviewMistakesButton = findViewById(R.id.reviewMistakesButton);
         ArrayList<Question> wrongQuestions = getIntent().getParcelableArrayListExtra("WRONG_QUESTIONS");
 
+        //Show the Wrong Answered Questions
         if (wrongQuestions != null && !wrongQuestions.isEmpty()) {
             reviewMistakesButton.setVisibility(View.VISIBLE);
             reviewMistakesButton.setOnClickListener(v -> {
