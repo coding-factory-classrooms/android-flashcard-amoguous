@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         final String[] choices = {"Facile", "Normal", "Difficile"};
         final int[] selectedDifficulty = {0};
 
+        // Creation of the Pop-Up to choose the difficulty
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setTitle("Choose your difficulty")

@@ -110,6 +110,8 @@ public class QuizActivity extends AppCompatActivity {
                     answerValidated = false;
                 } else {
                     Toast.makeText(this, "Quiz finished!", Toast.LENGTH_LONG).show();
+
+                    // Redirect to StatActivity
                     Intent intent = new Intent(QuizActivity.this, StatActivity.class);
                     intent.putExtra("difficulty",difficulty);
                     intent.putExtra("total",questionList.size());
